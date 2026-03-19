@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ตารางกำหนดรับวางบิล & ชำระเงิน ปี 2026 - เอพี กรุ๊ป</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background: linear-gradient(160deg, #e8f4fd 0%, #f0f7ff 40%, #faf5ff 100%);
+    min-height: 100vh;
+    padding: 30px 20px;
+    color: #1e293b;
+  }
+
+  .page-wrapper { max-width: 1200px; margin: 0 auto; }
+
+  /* HEADER */
+  .header { text-align: center; margin-bottom: 36px; }
+
+  .company-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 6px 20px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+  }
+
+  .header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1e293b;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .header h1 .accent-blue { color: #2563eb; }
+  .header h1 .accent-purple { color: #7c3aed; }
+
+  .header p { color: #64748b; font-size: 14px; }
+
+  /* INFO CARDS */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .info-card {
+    background: #fff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  .info-card .icon { font-size: 28px; margin-bottom: 8px; }
+  .info-card .label { font-size: 12px; color: #64748b; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .info-card .value { font-size: 13px; color: #334155; font-weight: 500; line-height: 1.6; }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    justify-content: center;
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px 20px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #475569; font-weight: 500; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+  /* MONTH SECTIONS */
+  .month-section {
+    margin-bottom: 28px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border: 1.5px solid #e2e8f0;
+  }
+
+  .month-header {
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .month-header .month-name { font-size: 17px; display: flex; align-items: center; gap: 10px; }
+  .month-header .month-count {
+    font-size: 12px;
+    background: rgba(255,255,255,0.25);
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+
+  .m-jan .month-header  { background: linear-gradient(135deg, #1d4ed8, #3b82f6); }
+  .m-feb .month-header  { background: linear-gradient(135deg, #7c3aed, #a855f7); }
+  .m-mar .month-header  { background: linear-gradient(135deg, #0891b2, #06b6d4); }
+  .m-apr .month-header  { background: linear-gradient(135deg, #b45309, #f59e0b); }
+  .m-may .month-header  { background: linear-gradient(135deg, #15803d, #22c55e); }
+  .m-jun .month-header  { background: linear-gradient(135deg, #0e7490, #0891b2); }
+  .m-jul .month-header  { background: linear-gradient(135deg, #be123c, #f43f5e); }
+  .m-aug .month-header  { background: linear-gradient(135deg, #7e22ce, #a855f7); }
+  .m-sep .month-header  { background: linear-gradient(135deg, #c2410c, #f97316); }
+  .m-oct .month-header  { background: linear-gradient(135deg, #0f766e, #14b8a6); }
+  .m-nov .month-header  { background: linear-gradient(135deg, #92400e, #d97706); }
+  .m-dec .month-header  { background: linear-gradient(135deg, #1e3a8a, #4f46e5); }
+
+  .month-table { width: 100%; border-collapse: collapse; background: #fff; }
+
+  .month-table thead th {
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-align: center;
+    background: #f8fafc;
+    color: #64748b;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  .month-table thead th:first-child { text-align: left; }
+
+  .month-table tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.15s;
+  }
+
+  .month-table tbody tr:hover { background: #f8fafc; }
+  .month-table tbody tr:last-child { border-bottom: none; }
+
+  .month-table tbody td {
+    padding: 11px 16px;
+    font-size: 14px;
+    text-align: center;
+    color: #334155;
+  }
+
+  .month-table tbody td:first-child { text-align: left; }
+
+  /* Date pills */
+  .date-pill {
+    display: inline-block;
+    padding: 4px 11px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .pill-7  { background: #dbeafe; border: 1.5px solid #93c5fd; color: #1d4ed8; }
+  .pill-15 { background: #fef9c3; border: 1.5px solid #fde047; color: #854d0e; }
+  .pill-30 { background: #dcfce7; border: 1.5px solid #86efac; color: #15803d; }
+
+  /* SHIFTED pill — วันที่เลื่อนจากปกติ */
+  .pill-shifted {
+    display: inline-block;
+    padding: 4px 11px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    position: relative;
+  }
+
+  .pill-7.pill-shifted  { background: #fee2e2; border: 2px solid #f87171; color: #b91c1c; }
+  .pill-15.pill-shifted { background: #fef3c7; border: 2px solid #fbbf24; color: #92400e; }
+  .pill-30.pill-shifted { background: #fce7f3; border: 2px solid #f472b6; color: #9d174d; }
+
+  /* HOLIDAY ROW */
+  .holiday-row { background: #fff7f7 !important; }
+  .holiday-row:hover { background: #fff0f0 !important; }
+
+  .holiday-row td:first-child {
+    border-left: 4px solid #ef4444;
+  }
+
+  /* Holiday alert box inside row */
+  .holiday-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: linear-gradient(135deg, #fef2f2, #fff5f5);
+    border: 1.5px solid #fca5a5;
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-top: 4px;
+  }
+
+  .holiday-alert .alert-icon { font-size: 18px; flex-shrink: 0; line-height: 1.3; }
+
+  .holiday-alert .alert-body {}
+
+  .holiday-alert .alert-title {
+    font-size: 12px;
+    font-weight: 800;
+    color: #b91c1c;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+  .holiday-alert .alert-desc {
+    font-size: 12px;
+    color: #ef4444;
+    font-weight: 600;
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+
+  /* Shift notice badge next to date pill */
+  .shift-notice {
+    display: block;
+    font-size: 10px;
+    color: #ef4444;
+    font-weight: 700;
+    margin-top: 3px;
+    letter-spacing: 0.2px;
+  }
+
+  .bill-date { font-size: 15px; font-weight: 700; color: #1e293b; }
+  .day-label { font-size: 11px; color: #94a3b8; font-weight: 400; margin-top: 1px; }
+
+  /* NOTES SECTION */
+  .notes-section {
+    background: #fff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 24px;
+    margin-top: 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  .notes-section h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #92400e;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .notes-list { list-style: none; }
+
+  .notes-list li {
+    font-size: 13px;
+    color: #475569;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.6;
+  }
+
+  .notes-list li:last-child { border-bottom: none; }
+  .notes-list li::before { content: "•"; color: #f59e0b; font-size: 18px; flex-shrink: 0; line-height: 1.3; }
+
+  .location-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+
+  .location-card {
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 14px;
+  }
+
+  .location-card .loc-title {
+    font-size: 12px;
+    color: #2563eb;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .location-card .loc-detail { font-size: 13px; color: #334155; line-height: 1.6; }
+
+  .footer { text-align: center; margin-top: 32px; color: #94a3b8; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="company-badge">🏢 เอพี กรุ๊ป</div>
+    <h1>ตารางกำหนดการ<span class="accent-blue">รับวางบิล</span> &amp; <span class="accent-purple">ชำระเงิน</span></h1>
+    <p>ประจำปี 2026 (มกราคม 2026 – มกราคม 2027) &nbsp;|&nbsp; อัพเดต ณ วันที่ 11/11/2025</p>
+  </div>
+
+  <!-- INFO CARDS -->
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="icon">📅</div>
+      <div class="label">วันรับวางบิล</div>
+      <div class="value">ทุกวัน<strong style="color:#2563eb"> พฤหัสบดี</strong><br>เวลา 09:00 – 16:00 น.</div>
+    </div>
+    <div class="info-card">
+      <div class="icon">📄</div>
+      <div class="label">วันรับใบเสร็จรับเงิน</div>
+      <div class="value">ทุกวัน<strong style="color:#7c3aed"> อังคาร &amp; พฤหัสบดี</strong><br>เวลา 09:00 – 15:00 น.</div>
+    </div>
+    <div class="info-card">
+      <div class="icon">🏙️</div>
+      <div class="label">สถานที่</div>
+      <div class="value">อาคารโอเชียน ทาวเวอร์ 1<br>ชั้น 17</div>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#2563eb"></div>Due date 7 วัน (ค่าแรง/ติดตั้ง/รับเหมา)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#d97706"></div>Due date 15 วัน</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>Due date 30 วัน</div>
+    <div class="legend-item" style="border-left:3px solid #ef4444; padding-left:12px; margin-left:6px;">
+      <div class="legend-dot" style="background:#ef4444"></div>
+      <span style="color:#b91c1c; font-weight:700">วันหยุด — วันชำระเงินถูกเลื่อน (สีแดง)</span>
+    </div>
+  </div>
+
+  <!-- JANUARY -->
+  <div class="month-section m-jan">
+    <div class="month-header">
+      <div class="month-name">🗓️ มกราคม 2026</div>
+      <div class="month-count">5 สัปดาห์</div>
+    </div>
+    <table class="month-table">
+      <thead><tr>
+        <th>วันที่รับวางบิล</th><th>Due 7 วัน</th><th>Due 15 วัน</th><th>Due 30 วัน</th><th>สถานะ</th>
+      </tr></thead>
+      <tbody>
+        <tr class="holiday-row">
+          <td>
+            <div class="bill-date">1 ม.ค. 2026</div>
+            <div class="day-label">พฤหัสบดี</div>
+            <div class="holiday-alert">
+              <div class="alert-icon">🎉</div>
+              <div class="alert-body">
+                <div class="alert-title">วันหยุด — ขึ้นปีใหม่</div>
+                <div class="alert-desc">วันที่ 01/01/2026 เป็นวันหยุด<br>Due 7 &amp; 15 วัน เลื่อนไปตรงกัน</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="date-pill pill-7 pill-shifted">16 ม.ค.</span>
+            <span class="shift-notice">⚠ เลื่อนจากปกติ</span>
+          </td>
+          <td>
+            <span class="date-pill pill-15 pill-shifted">16 ม.ค.</span>
+            <span class="shift-notice">⚠ เลื่อนตรงกับ Due 7</span>
+          </td>
+          <td><span class="date-pill pill-30">30 ม.ค.</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><div class="bill-date">8 ม.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td>
+          <td><span class="date-pill pill-7">16 ม.ค.</span></td>
+          <td><span class="date-pill pill-15">23 ม.ค.</span></td>
+          <td><span class="date-pill pill-30">6 ก.พ.</span></td>
+          <td>ปกติ</td>
+        </tr>
+        <tr>
+          <td><div class="bill-date">15 ม.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td>
+          <td><span class="date-pill pill-7">23 ม.ค.</span></td>
+          <td><span class="date-pill pill-15">30 ม.ค.</span></td>
+          <td><span class="date-pill pill-30">13 ก.พ.</span></td>
+          <td>ปกติ</td>
+        </tr>
+        <tr>
+          <td><div class="bill-date">22 ม.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td>
+          <td><span class="date-pill pill-7">30 ม.ค.</span></td>
+          <td><span class="date-pill pill-15">6 ก.พ.</span></td>
+          <td><span class="date-pill pill-30">20 ก.พ.</span></td>
+          <td>ปกติ</td>
+        </tr>
+        <tr>
+          <td><div class="bill-date">29 ม.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td>
+          <td><span class="date-pill pill-7">6 ก.พ.</span></td>
+          <td><span class="date-pill pill-15">13 ก.พ.</span></td>
+          <td><span class="date-pill pill-30">27 ก.พ.</span></td>
+          <td>ปกติ</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FEBRUARY -->
+  <div class="month-section m-feb">
+    <div class="month-header">
+      <div class="month-name">🗓️ กุมภาพันธ์ 2026</div>
+      <div class="month-count">4 สัปดาห์</div>
+    </div>
+    <table class="month-table">
+      <thead><tr><th>วันที่รับวางบิล</th><th>Due 7 วัน</th><th>Due 15 วัน</th><th>Due 30 วัน</th><th>สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td><div class="bill-date">5 ก.พ. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">13 ก.พ.</span></td><td><span class="date-pill pill-15">20 ก.พ.</span></td><td><span class="date-pill pill-30">6 มี.ค.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">12 ก.พ. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">20 ก.พ.</span></td><td><span class="date-pill pill-15">27 ก.พ.</span></td><td><span class="date-pill pill-30">13 มี.ค.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">19 ก.พ. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">27 ก.พ.</span></td><td><span class="date-pill pill-15">6 มี.ค.</span></td><td><span class="date-pill pill-30">20 มี.ค.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">26 ก.พ. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">6 มี.ค.</span></td><td><span class="date-pill pill-15">13 มี.ค.</span></td><td><span class="date-pill pill-30">27 มี.ค.</span></td><td>ปกติ</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MARCH -->
+  <div class="month-section m-mar">
+    <div class="month-header">
+      <div class="month-name">🗓️ มีนาคม 2026</div>
+      <div class="month-count">4 สัปดาห์</div>
+    </div>
+    <table class="month-table">
+      <thead><tr><th>วันที่รับวางบิล</th><th>Due 7 วัน</th><th>Due 15 วัน</th><th>Due 30 วัน</th><th>สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td><div class="bill-date">5 มี.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">13 มี.ค.</span></td><td><span class="date-pill pill-15">20 มี.ค.</span></td><td><span class="date-pill pill-30">3 เม.ย.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">12 มี.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">20 มี.ค.</span></td><td><span class="date-pill pill-15">27 มี.ค.</span></td><td><span class="date-pill pill-30">10 เม.ย.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">19 มี.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">27 มี.ค.</span></td><td><span class="date-pill pill-15">3 เม.ย.</span></td><td><span class="date-pill pill-30">17 เม.ย.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">26 มี.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">3 เม.ย.</span></td><td><span class="date-pill pill-15">10 เม.ย.</span></td><td><span class="date-pill pill-30">24 เม.ย.</span></td><td>ปกติ</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- APRIL -->
+  <div class="month-section m-apr">
+    <div class="month-header">
+      <div class="month-name">🗓️ เมษายน 2026</div>
+      <div class="month-count">5 สัปดาห์</div>
+    </div>
+    <table class="month-table">
+      <thead><tr><th>วันที่รับวางบิล</th><th>Due 7 วัน</th><th>Due 15 วัน</th><th>Due 30 วัน</th><th>สถานะ</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><div class="bill-date">2 เม.ย. 2026</div><div class="day-label">พฤหัสบดี</div></td>
+          <td><span class="date-pill pill-7">10 เม.ย.</span></td>
+          <td><span class="date-pill pill-15">17 เม.ย.</span></td>
+          <td><span class="date-pill pill-30">8 พ.ค.</span></td>
+          <td>ปกติ</td>
+        </tr>
+        <tr class="holiday-row">
+          <td>
+            <div class="bill-date">9 เม.ย. 2026</div>
+            <div class="day-label">พฤหัสบดี</div>
+            <div class="holiday-alert">
+              <div class="alert-icon">🌊</div>
+              <div class="alert-body">
+                <div class="alert-title">วันหยุด — สงกรานต์</div>
+                <div class="alert-desc">13–15 เม.ย. 2026<br>Due 7 &amp; 15 วัน เลื่อนไปตรงกัน 24 เม.ย.</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="date-pill pill-7 pill-shifted">24 เม.ย.</span>
+            <span class="shift-notice">⚠ เลื่อนข้ามสงกรานต์</span>
+          </td>
+          <td>
+            <span class="date-pill pill-15 pill-shifted">24 เม.ย.</span>
+            <span class="shift-notice">⚠ เลื่อนตรงกับ Due 7</span>
+          </td>
+          <td><span class="date-pill pill-30">8 พ.ค.</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><div class="bill-date">16 เม.ย. 2026</div><div class="day-label">พฤหัสบดี</div></td>
+          <td><span class="date-pill pill-7">24 เม.ย.</span></td>
+          <td><span class="date-pill pill-15">8 พ.ค.</span></td>
+          <td><span class="date-pill pill-30">15 พ.ค.</span></td>
+          <td>ปกติ</td>
+        </tr>
+        <tr class="holiday-row">
+          <td>
+            <div class="bill-date">23 เม.ย. 2026</div>
+            <div class="day-label">พฤหัสบดี</div>
+            <div class="holiday-alert">
+              <div class="alert-icon">👷</div>
+              <div class="alert-body">
+                <div class="alert-title">วันหยุด — วันแรงงานแห่งชาติ</div>
+                <div class="alert-desc">01/05/2026 · Due 7 &amp; 15 วัน เลื่อนตรงกัน 8 พ.ค.</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="date-pill pill-7 pill-shifted">8 พ.ค.</span>
+            <span class="shift-notice">⚠ เลื่อนข้ามวันแรงงาน</span>
+          </td>
+          <td>
+            <span class="date-pill pill-15 pill-shifted">8 พ.ค.</span>
+            <span class="shift-notice">⚠ เลื่อนตรงกับ Due 7</span>
+          </td>
+          <td><span class="date-pill pill-30">22 พ.ค.</span></td>
+          <td>—</td>
+        </tr>
+        <tr class="holiday-row">
+          <td>
+            <div class="bill-date">30 เม.ย. 2026</div>
+            <div class="day-label">พฤหัสบดี</div>
+            <div class="holiday-alert">
+              <div class="alert-icon">👑</div>
+              <div class="alert-body">
+                <div class="alert-title">วันหยุด — วันฉัตรมงคล</div>
+                <div class="alert-desc">04/05/2026 · Due 7 &amp; 15 วัน เลื่อนตรงกัน 15 พ.ค.</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="date-pill pill-7 pill-shifted">15 พ.ค.</span>
+            <span class="shift-notice">⚠ เลื่อนข้ามฉัตรมงคล</span>
+          </td>
+          <td>
+            <span class="date-pill pill-15 pill-shifted">15 พ.ค.</span>
+            <span class="shift-notice">⚠ เลื่อนตรงกับ Due 7</span>
+          </td>
+          <td><span class="date-pill pill-30">29 พ.ค.</span></td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- MAY -->
+  <div class="month-section m-may">
+    <div class="month-header">
+      <div class="month-name">🗓️ พฤษภาคม 2026</div>
+      <div class="month-count">4 สัปดาห์</div>
+    </div>
+    <table class="month-table">
+      <thead><tr><th>วันที่รับวางบิล</th><th>Due 7 วัน</th><th>Due 15 วัน</th><th>Due 30 วัน</th><th>สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td><div class="bill-date">7 พ.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">15 พ.ค.</span></td><td><span class="date-pill pill-15">22 พ.ค.</span></td><td><span class="date-pill pill-30">5 มิ.ย.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">14 พ.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">22 พ.ค.</span></td><td><span class="date-pill pill-15">29 พ.ค.</span></td><td><span class="date-pill pill-30">12 มิ.ย.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">21 พ.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">29 พ.ค.</span></td><td><span class="date-pill pill-15">5 มิ.ย.</span></td><td><span class="date-pill pill-30">19 มิ.ย.</span></td><td>ปกติ</td></tr>
+        <tr>
+          <td><div class="bill-date">28 พ.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td>
+          <td>
+            <span class="date-pill pill-7 pill-shifted">12 มิ.ย.</span>
+            <span class="shift-notice">⚠ เลื่อน 1 รอบ</span>
+          </td>
+          <td>
+            <span class="date-pill pill-15 pill-shifted">12 มิ.ย.</span>
+            <span class="shift-notice">⚠ เลื่อนตรงกับ Due 7</span>
+          </td>
+          <td><span class="date-pill pill-30">26 มิ.ย.</span></td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- JUNE -->
+  <div class="month-section m-jun">
+    <div class="month-header">
+      <div class="month-name">🗓️ มิถุนายน 2026</div>
+      <div class="month-count">4 สัปดาห์</div>
+    </div>
+    <table class="month-table">
+      <thead><tr><th>วันที่รับวางบิล</th><th>Due 7 วัน</th><th>Due 15 วัน</th><th>Due 30 วัน</th><th>สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td><div class="bill-date">4 มิ.ย. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">12 มิ.ย.</span></td><td><span class="date-pill pill-15">19 มิ.ย.</span></td><td><span class="date-pill pill-30">3 ก.ค.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">11 มิ.ย. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">19 มิ.ย.</span></td><td><span class="date-pill pill-15">26 มิ.ย.</span></td><td><span class="date-pill pill-30">10 ก.ค.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">18 มิ.ย. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">26 มิ.ย.</span></td><td><span class="date-pill pill-15">3 ก.ค.</span></td><td><span class="date-pill pill-30">17 ก.ค.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">25 มิ.ย. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">3 ก.ค.</span></td><td><span class="date-pill pill-15">10 ก.ค.</span></td><td><span class="date-pill pill-30">24 ก.ค.</span></td><td>ปกติ</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- JULY -->
+  <div class="month-section m-jul">
+    <div class="month-header">
+      <div class="month-name">🗓️ กรกฎาคม 2026</div>
+      <div class="month-count">5 สัปดาห์</div>
+    </div>
+    <table class="month-table">
+      <thead><tr><th>วันที่รับวางบิล</th><th>Due 7 วัน</th><th>Due 15 วัน</th><th>Due 30 วัน</th><th>สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td><div class="bill-date">2 ก.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">10 ก.ค.</span></td><td><span class="date-pill pill-15">17 ก.ค.</span></td><td><span class="date-pill pill-30">31 ก.ค.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">9 ก.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">17 ก.ค.</span></td><td><span class="date-pill pill-15">24 ก.ค.</span></td><td><span class="date-pill pill-30">7 ส.ค.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">16 ก.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">24 ก.ค.</span></td><td><span class="date-pill pill-15">31 ก.ค.</span></td><td><span class="date-pill pill-30">14 ส.ค.</span></td><td>ปกติ</td></tr>
+        <tr class="holiday-row">
+          <td>
+            <div class="bill-date">23 ก.ค. 2026</div>
+            <div class="day-label">พฤหัสบดี</div>
+            <div class="holiday-alert">
+              <div class="alert-icon">👑</div>
+              <div class="alert-body">
+                <div class="alert-title">วันหยุด — ร.10 &amp; วันอาสาฬหบูชา</div>
+                <div class="alert-desc">28–29 ก.ค. 2026 · Due 7 &amp; 15 วัน เลื่อนตรงกัน 7 ส.ค.</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="date-pill pill-7 pill-shifted">7 ส.ค.</span>
+            <span class="shift-notice">⚠ เลื่อนข้ามวันหยุด</span>
+          </td>
+          <td>
+            <span class="date-pill pill-15 pill-shifted">7 ส.ค.</span>
+            <span class="shift-notice">⚠ เลื่อนตรงกับ Due 7</span>
+          </td>
+          <td><span class="date-pill pill-30">21 ส.ค.</span></td>
+          <td>—</td>
+        </tr>
+        <tr><td><div class="bill-date">30 ก.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">7 ส.ค.</span></td><td><span class="date-pill pill-15">14 ส.ค.</span></td><td><span class="date-pill pill-30">28 ส.ค.</span></td><td>ปกติ</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- AUGUST -->
+  <div class="month-section m-aug">
+    <div class="month-header">
+      <div class="month-name">🗓️ สิงหาคม 2026</div>
+      <div class="month-count">4 สัปดาห์</div>
+    </div>
+    <table class="month-table">
+      <thead><tr><th>วันที่รับวางบิล</th><th>Due 7 วัน</th><th>Due 15 วัน</th><th>Due 30 วัน</th><th>สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td><div class="bill-date">6 ส.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">14 ส.ค.</span></td><td><span class="date-pill pill-15">21 ส.ค.</span></td><td><span class="date-pill pill-30">4 ก.ย.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">13 ส.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">21 ส.ค.</span></td><td><span class="date-pill pill-15">28 ส.ค.</span></td><td><span class="date-pill pill-30">11 ก.ย.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">20 ส.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">28 ส.ค.</span></td><td><span class="date-pill pill-15">4 ก.ย.</span></td><td><span class="date-pill pill-30">18 ก.ย.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">27 ส.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">4 ก.ย.</span></td><td><span class="date-pill pill-15">11 ก.ย.</span></td><td><span class="date-pill pill-30">25 ก.ย.</span></td><td>ปกติ</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SEPTEMBER -->
+  <div class="month-section m-sep">
+    <div class="month-header">
+      <div class="month-name">🗓️ กันยายน 2026</div>
+      <div class="month-count">4 สัปดาห์</div>
+    </div>
+    <table class="month-table">
+      <thead><tr><th>วันที่รับวางบิล</th><th>Due 7 วัน</th><th>Due 15 วัน</th><th>Due 30 วัน</th><th>สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td><div class="bill-date">3 ก.ย. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">11 ก.ย.</span></td><td><span class="date-pill pill-15">18 ก.ย.</span></td><td><span class="date-pill pill-30">2 ต.ค.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">10 ก.ย. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">18 ก.ย.</span></td><td><span class="date-pill pill-15">25 ก.ย.</span></td><td><span class="date-pill pill-30">9 ต.ค.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">17 ก.ย. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">25 ก.ย.</span></td><td><span class="date-pill pill-15">2 ต.ค.</span></td><td><span class="date-pill pill-30">16 ต.ค.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">24 ก.ย. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">2 ต.ค.</span></td><td><span class="date-pill pill-15">9 ต.ค.</span></td><td><span class="date-pill pill-30">30 ต.ค.</span></td><td>ปกติ</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- OCTOBER -->
+  <div class="month-section m-oct">
+    <div class="month-header">
+      <div class="month-name">🗓️ ตุลาคม 2026</div>
+      <div class="month-count">5 สัปดาห์</div>
+    </div>
+    <table class="month-table">
+      <thead><tr><th>วันที่รับวางบิล</th><th>Due 7 วัน</th><th>Due 15 วัน</th><th>Due 30 วัน</th><th>สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td><div class="bill-date">1 ต.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">9 ต.ค.</span></td><td><span class="date-pill pill-15">16 ต.ค.</span></td><td><span class="date-pill pill-30">30 ต.ค.</span></td><td>ปกติ</td></tr>
+        <tr>
+          <td><div class="bill-date">8 ต.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td>
+          <td><span class="date-pill pill-7">16 ต.ค.</span></td>
+          <td>
+            <span class="date-pill pill-15 pill-shifted">30 ต.ค.</span>
+            <span class="shift-notice">⚠ เลื่อน 1 รอบ</span>
+          </td>
+          <td><span class="date-pill pill-30">6 พ.ย.</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><div class="bill-date">15 ต.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td>
+          <td>
+            <span class="date-pill pill-7 pill-shifted">30 ต.ค.</span>
+            <span class="shift-notice">⚠ เลื่อน 1 รอบ</span>
+          </td>
+          <td>
+            <span class="date-pill pill-15 pill-shifted">30 ต.ค.</span>
+            <span class="shift-notice">⚠ เลื่อนตรงกับ Due 7</span>
+          </td>
+          <td><span class="date-pill pill-30">13 พ.ย.</span></td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><div class="bill-date">22 ต.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td>
+          <td>
+            <span class="date-pill pill-7 pill-shifted">30 ต.ค.</span>
+            <span class="shift-notice">⚠ เลื่อน 1 รอบ</span>
+          </td>
+          <td><span class="date-pill pill-15">6 พ.ย.</span></td>
+          <td><span class="date-pill pill-30">20 พ.ย.</span></td>
+          <td>—</td>
+        </tr>
+        <tr><td><div class="bill-date">29 ต.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">6 พ.ย.</span></td><td><span class="date-pill pill-15">13 พ.ย.</span></td><td><span class="date-pill pill-30">27 พ.ย.</span></td><td>ปกติ</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- NOVEMBER -->
+  <div class="month-section m-nov">
+    <div class="month-header">
+      <div class="month-name">🗓️ พฤศจิกายน 2026</div>
+      <div class="month-count">4 สัปดาห์</div>
+    </div>
+    <table class="month-table">
+      <thead><tr><th>วันที่รับวางบิล</th><th>Due 7 วัน</th><th>Due 15 วัน</th><th>Due 30 วัน</th><th>สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td><div class="bill-date">5 พ.ย. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">13 พ.ย.</span></td><td><span class="date-pill pill-15">20 พ.ย.</span></td><td><span class="date-pill pill-30">4 ธ.ค.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">12 พ.ย. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">20 พ.ย.</span></td><td><span class="date-pill pill-15">27 พ.ย.</span></td><td><span class="date-pill pill-30">11 ธ.ค.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">19 พ.ย. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">27 พ.ย.</span></td><td><span class="date-pill pill-15">4 ธ.ค.</span></td><td><span class="date-pill pill-30">18 ธ.ค.</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">26 พ.ย. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">4 ธ.ค.</span></td><td><span class="date-pill pill-15">11 ธ.ค.</span></td><td><span class="date-pill pill-30">25 ธ.ค.</span></td><td>ปกติ</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DECEMBER -->
+  <div class="month-section m-dec">
+    <div class="month-header">
+      <div class="month-name">🗓️ ธันวาคม 2026 – มกราคม 2027</div>
+      <div class="month-count">5 สัปดาห์</div>
+    </div>
+    <table class="month-table">
+      <thead><tr><th>วันที่รับวางบิล</th><th>Due 7 วัน</th><th>Due 15 วัน</th><th>Due 30 วัน</th><th>สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td><div class="bill-date">3 ธ.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">11 ธ.ค.</span></td><td><span class="date-pill pill-15">18 ธ.ค.</span></td><td><span class="date-pill pill-30">8 ม.ค. 27</span></td><td>ปกติ</td></tr>
+        <tr><td><div class="bill-date">10 ธ.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td><td><span class="date-pill pill-7">18 ธ.ค.</span></td><td><span class="date-pill pill-15">25 ธ.ค.</span></td><td><span class="date-pill pill-30">8 ม.ค. 27</span></td><td>ปกติ</td></tr>
+        <tr>
+          <td><div class="bill-date">17 ธ.ค. 2026</div><div class="day-label">พฤหัสบดี</div></td>
+          <td><span class="date-pill pill-7">25 ธ.ค.</span></td>
+          <td>
+            <span class="date-pill pill-15 pill-shifted">8 ม.ค. 27</span>
+            <span class="shift-notice">⚠ เลื่อนข้ามปี</span>
+          </td>
+          <td><span class="date-pill pill-30">15 ม.ค. 27</span></td>
+          <td>—</td>
+        </tr>
+        <tr class="holiday-row">
+          <td>
+            <div class="bill-date">24 ธ.ค. 2026</div>
+            <div class="day-label">พฤหัสบดี</div>
+            <div class="holiday-alert">
+              <div class="alert-icon">🎆</div>
+              <div class="alert-body">
+                <div class="alert-title">วันหยุด — วันสิ้นปี</div>
+                <div class="alert-desc">31/12/2026 · Due 7 &amp; 15 วัน เลื่อนตรงกัน 15 ม.ค. 27</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="date-pill pill-7 pill-shifted">15 ม.ค. 27</span>
+            <span class="shift-notice">⚠ เลื่อนข้ามสิ้นปี</span>
+          </td>
+          <td>
+            <span class="date-pill pill-15 pill-shifted">15 ม.ค. 27</span>
+            <span class="shift-notice">⚠ เลื่อนตรงกับ Due 7</span>
+          </td>
+          <td><span class="date-pill pill-30">22 ม.ค. 27</span></td>
+          <td>—</td>
+        </tr>
+        <tr class="holiday-row">
+          <td>
+            <div class="bill-date">7 ม.ค. 2027</div>
+            <div class="day-label">พฤหัสบดี</div>
+            <div class="holiday-alert">
+              <div class="alert-icon">🎉</div>
+              <div class="alert-body">
+                <div class="alert-title">วันหยุด — วันขึ้นปีใหม่ 2027</div>
+                <div class="alert-desc">01/01/2027 · Due 7 &amp; 15 วัน เลื่อนตรงกัน 15 ม.ค. 27</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="date-pill pill-7 pill-shifted">15 ม.ค. 27</span>
+            <span class="shift-notice">⚠ เลื่อนข้ามปีใหม่</span>
+          </td>
+          <td>
+            <span class="date-pill pill-15 pill-shifted">15 ม.ค. 27</span>
+            <span class="shift-notice">⚠ เลื่อนตรงกับ Due 7</span>
+          </td>
+          <td><span class="date-pill pill-30">29 ม.ค. 27</span></td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- NOTES -->
+  <div class="notes-section">
+    <h3>⚠️ หมายเหตุสำคัญ</h3>
+    <ul class="notes-list">
+      <li>กรุณาตรวจสอบเอกสารให้เรียบร้อยก่อนนำส่ง และเพื่อความสะดวกในการรับเงิน สามารถแนบใบเสร็จรับเงินมาพร้อมเอกสารวางบิลได้</li>
+      <li>สัปดาห์ใดที่มีวันหยุดนักขัตฤกษ์ตรงกับวัน จันทร์ อังคาร พฤหัส และศุกร์ <strong style="color:#b91c1c">จะงดชำระเงิน</strong> และจะชำระในวัน<strong>ศุกร์ถัดไป</strong>เท่านั้น</li>
+      <li>Webvendor ส่งเอกสารได้ถึงวัน ศุกร์–พฤหัสบดี เวลา 17:30 น.</li>
+    </ul>
+    <div class="location-grid">
+      <div class="location-card">
+        <div class="loc-title">📍 สถานที่รับวางบิล</div>
+        <div class="loc-detail">อาคารโอเชียน ทาวเวอร์ 1 ชั้น 17<br>ทุกวัน<strong> พฤหัสบดี</strong> เวลา 09:00–16:00 น.</div>
+      </div>
+      <div class="location-card">
+        <div class="loc-title">📍 สถานที่รับใบเสร็จรับเงิน</div>
+        <div class="loc-detail">อาคารโอเชียน ทาวเวอร์ 1 ชั้น 17<br>ทุกวัน<strong> อังคาร &amp; พฤหัสบดี</strong> เวลา 09:00–15:00 น.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>เอพี กรุ๊ป &nbsp;|&nbsp; ตารางกำหนดการรับวางบิลและชำระเงิน ปี 2026 &nbsp;|&nbsp; อัพเดต 11/11/2025</p>
+  </div>
+
+</div>
+</body>
+</html>
